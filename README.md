@@ -68,7 +68,7 @@ cd [your-repo-folder]
 ### 2. Setup Backend
 cd backend
 npm install
-# Add your environment variables in a .env file (see .env.example if present)
+#### Add your environment variables in a .env file (see .env.example if present)
 npm run dev
 
 ### 3. Setup Python TTS Service
