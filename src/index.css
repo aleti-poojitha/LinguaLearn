@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html.font-size-small, body.font-size-small {
+  font-size: 14px;
+}
+html.font-size-medium, body.font-size-medium {
+  font-size: 16px;
+}
+html.font-size-large, body.font-size-large {
+  font-size: 20px;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Webkit */
+}
