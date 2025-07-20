@@ -1,37 +1,26 @@
 import express from 'express';
 import axios from 'axios';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+
+const TTS_SERVICE_URL = process.env.TTS_SERVICE_URL || 'https://lingualearn-tts.onrender.com';
 
 router.post('/tts', async (req, res) => {
-  const { text, language } = req.body;
-  if (!text || !language) {
+  const { text, lang, language } = req.body;
+  const ttsLang = lang || language;
+  if (!text || !ttsLang) {
     return res.status(400).json({ error: 'Missing text or language.' });
   }
   try {
-    const audioId = uuidv4();
-    const audioPath = path.join(__dirname, `../public/tts-${audioId}.mp3`);
     const response = await axios.post(
-      'http://localhost:5500/speak',
-      { text, language },
+      `${TTS_SERVICE_URL}/speak`,
+      { text, lang: ttsLang },
       { responseType: 'stream' }
     );
-    const writer = fs.createWriteStream(audioPath);
-    response.data.pipe(writer);
-    writer.on('finish', () => {
-      res.json({ audioUrls: [`/tts-${audioId}.mp3`] });
-    });
-    writer.on('error', () => {
-      res.status(500).json({ error: 'TTS generation failed.' });
-    });
+    res.set('Content-Type', 'audio/mpeg');
+    response.data.pipe(res);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'TTS generation failed.', details: error.message });
   }
 });
 
