@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Message, AppSettings, VoicePlayback } from '../types';
 import { Volume2, User, Bot, Pause, Play, MoreVertical, VolumeX, Volume1 } from 'lucide-react';
 import { WaveformDisplay } from './WaveformDisplay';
+import { fetchTTS } from '../utils/speechService';
 
 // Utility: Convert plain text lists to HTML lists
 function convertPlainTextListsToHtml(text: string) {
@@ -164,21 +165,13 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
     setCurrentAudioIndex(0);
     try {
       const cleanText = stripEmojis(stripHtmlTags(message.text));
-      const response = await fetch('/api/tts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: cleanText, language: settings.language })
-      });
-      const data = await response.json();
-      if (response.ok && data.audioUrls && data.audioUrls.length > 0) {
-        setAudioUrls(data.audioUrls);
-        setTimeout(() => {
-          setCurrentAudioIndex(0);
-          audioRef.current?.play();
-        }, 100);
-      } else {
-        setAudioError(data.error || 'TTS not available for this language.');
-      }
+      const audioBlob = await fetchTTS(cleanText, settings.language);
+      const audioUrl = URL.createObjectURL(audioBlob);
+      setAudioUrls([audioUrl]);
+      setTimeout(() => {
+        setCurrentAudioIndex(0);
+        audioRef.current?.play();
+      }, 100);
     } catch (err) {
       setAudioError('TTS generation failed. Please try again.');
     } finally {
@@ -278,7 +271,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
                     <div className="w-full max-w-xs rounded-lg shadow-md border border-purple-200 bg-white/90 p-2 my-2 flex flex-col items-center audio-theme-bar" style={{ fontFamily: 'sans-serif' }}>
                       <audio
                         ref={audioRef}
-                        src={backendUrl + audioUrls[currentAudioIndex]}
+                        src={audioUrls[currentAudioIndex]}
                         onTimeUpdate={handleTimeUpdate}
                         onLoadedMetadata={handleLoadedMetadata}
                         onPlay={handleAudioPlay}
@@ -340,7 +333,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
                           <button
                             onClick={async () => {
                               try {
-                                const res = await fetch(backendUrl + audioUrls[currentAudioIndex]);
+                                const res = await fetch(audioUrls[currentAudioIndex]);
                                 const blob = await res.blob();
                                 const url = window.URL.createObjectURL(blob);
                                 const a = document.createElement('a');
