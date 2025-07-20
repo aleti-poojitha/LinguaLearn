@@ -3,12 +3,11 @@
 ## Project Overview
 
 **LinguaLearn** is an AI-powered multilingual study companion designed for children of Meesho sellers and low-income families in India. It provides personalized, child-friendly explanations in multiple Indian languages via a conversational chatbot interface, accessible through mobile browsers without the need for app installation.
-
 **Sub-theme:** Personalized AI Assistant
 
 ## Features
 - Voice and text input for student queries
-- AI-generated, child-safe explanations (using GPT-3.5)
+- AI-generated, child-safe explanations (using Google Gemini)
 - Translation to Indian languages (Telugu, Hindi, etc.)
 - Text-to-speech (TTS) audio replies
 - Mobile-responsive chat interface
@@ -17,9 +16,9 @@
 ## Tech Stack
 - **Frontend:** React, Tailwind CSS, Vite
 - **Backend:** Node.js, Express, Mongoose (MongoDB)
-- **AI:** OpenAI GPT-3.5 API
+- **AI:** Google Gemini API (generative language model)
 - **Translation:** Google Cloud Translate API
-- **Text-to-Speech:** Google Cloud TTS API, edge-tts (Python)
+- **Text-to-Speech:** edge-tts (Python)
 - **Python Service:** Flask (for TTS audio generation)
 
 
@@ -44,6 +43,7 @@
 | Flask (Python)                   | BSD         | Python web server for TTS            | https://flask.palletsprojects.com/                  |
 | edge-tts (Python)                | MIT         | TTS synthesis (Python)               | https://github.com/ranyelhousieny/edge-tts          |
 | Google Cloud Translate API       | Proprietary | Translation service (API)            | https://cloud.google.com/translate                  |
+| Google Gemini API                | Proprietary | AI language model (API)	            | https://ai.google.dev/gemini-api/docs               | 
 
 
 ## Prototype Showcase
@@ -58,8 +58,8 @@
 - Node.js (v18+ recommended)
 - Python 3.8+
 - MongoDB (local or cloud instance)
-- Google Cloud credentials for Translate and TTS APIs
-- OpenAI API key
+- Google Cloud credentials for Translate and edge for TTS
+- Google Gemini API key
 
 ### 1. Clone the repository
 git clone [your-repo-url]
@@ -83,3 +83,7 @@ npm run dev
 
 ### 5. Access the App
 Open your browser and go to `http://localhost:5173` (or the port shown in your terminal).
+
+**Note:**
+All open-source attributions are listed above.
+Only the libraries, frameworks, and APIs actually used in this project are included.
