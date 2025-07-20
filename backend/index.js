@@ -18,7 +18,11 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 
 const app = express();
-app.use(cors());
+// CORS setup: allow only Vercel frontend
+app.use(cors({
+  origin: 'https://lingualearn-lingo.vercel.app',
+  credentials: true
+}));
 app.use(express.json());
 
 // MongoDB connection
