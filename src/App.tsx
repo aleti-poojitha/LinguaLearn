@@ -21,6 +21,8 @@ import { getAIResponse } from './utils/aiService';
 import LoginPage from './components/LoginPage';
 import { translations } from './utils/translations';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 function App() {
   // All hooks must be declared at the top, before any return or conditional
   const [messages, setMessages] = useState<Message[]>([
@@ -132,7 +134,7 @@ function App() {
     localStorage.setItem('user', JSON.stringify(user));
     try {
       // Always fetch latest progress from backend
-      const res = await fetch('/api/progress/update', {
+      const res = await fetch(`${API_BASE_URL}/api/progress/update`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: user.email })
@@ -358,7 +360,7 @@ function App() {
     setQuizCompleted(false);
     window.history.pushState({ view: 'quiz', subject: selectedSubject, topic: selectedTopic }, '');
     try {
-      const res = await fetch('/api/generate-quiz', {
+      const res = await fetch(`${API_BASE_URL}/api/generate-quiz`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -465,7 +467,7 @@ function App() {
     
     // TODO: Send progress update to backend
     try {
-      await fetch('/api/progress/update', {
+      await fetch(`${API_BASE_URL}/api/progress/update`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -620,14 +622,10 @@ function App() {
 
   const handleFeedback = async (rating: number, feedback?: string) => {
     try {
-      const res = await fetch('http://localhost:5000/api/auth/feedback', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: user?.email,
-      rating,
-          feedback
-        })
+        body: JSON.stringify({ rating, feedback })
       });
       if (res.ok) {
     // Show thank you message

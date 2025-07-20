@@ -1,12 +1,14 @@
 import { Subject, Language, AIResponse } from '../types';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 export const getAIResponse = async (
   input: string,
   subject: Subject,
   language: Language,
   context?: { previousMessages?: string[]; userLevel?: number }
 ): Promise<AIResponse> => {
-  const response = await fetch('http://localhost:5000/api', {
+  const response = await fetch(`${API_BASE_URL}/api`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
