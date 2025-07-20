@@ -39,21 +39,17 @@
 | jsonwebtoken (^9.0.0)            | MIT         | JWT authentication                   | https://github.com/auth0/node-jsonwebtoken          |
 | cors (^2.8.5)                    | MIT         | CORS middleware                      | https://github.com/expressjs/cors                   |
 | nodemailer (^6.10.1)             | MIT         | Email sending                        | https://nodemailer.com/                             |
-| twilio (^4.15.0)                 | MIT         | SMS/voice integration (if used)      | https://www.twilio.com/docs/libraries/node          |
 | node-fetch (^2.6.7, ^2.7.0)      | MIT         | HTTP requests                        | https://github.com/node-fetch/node-fetch            |
 | @google-cloud/translate (^9.2.0) | Apache-2.0  | Translation API client               | https://github.com/googleapis/nodejs-translate      |
-| @google-cloud/text-to-speech(6.2)| Apache-2.0  | TTS API client                       | https://github.com/googleapis/nodejs-text-to-speech |
 | Flask (Python)                   | BSD         | Python web server for TTS            | https://flask.palletsprojects.com/                  |
 | edge-tts (Python)                | MIT         | TTS synthesis (Python)               | https://github.com/ranyelhousieny/edge-tts          |
-| OpenAI GPT-3.5 API               | Proprietary | AI language model (API)              | https://platform.openai.com/docs/models/gpt-3-5     |
 | Google Cloud Translate API       | Proprietary | Translation service (API)            | https://cloud.google.com/translate                  |
-| Google Cloud TTS API             | Proprietary | Text-to-speech (API)                 | https://cloud.google.com/text-to-speech             |
 
 
 ## Prototype Showcase
-- **Live Demo:** [Add your deployed app URL here]
-- **Source Code:** [Add your public repository link here]
-- **README/Setup:** See below for local setup instructions.
+- **Live Demo:** https://lingualearn-lingo.vercel.app/
+- **Source Code:** https://github.com/aleti-poojitha/LinguaLearn/
+- **README/Setup:** https://github.com/aleti-poojitha/LinguaLearn/edit/main/README.md
 - **Sub-theme:** Personalized AI Assistant
 
 
