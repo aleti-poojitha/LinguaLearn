@@ -2,7 +2,6 @@ import express from 'express';
 import axios from 'axios';
 
 const router = express.Router();
-
 const TTS_SERVICE_URL = process.env.TTS_SERVICE_URL || 'https://lingualearn-tts.onrender.com';
 
 router.post('/tts', async (req, res) => {
@@ -24,4 +23,4 @@ router.post('/tts', async (req, res) => {
   }
 });
 
-export default router; 
+export default router;

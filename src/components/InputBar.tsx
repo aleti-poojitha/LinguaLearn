@@ -102,39 +102,39 @@ export const InputBar: React.FC<InputBarProps> = ({
   return (
     <div className="fixed bottom-0 left-0 w-full z-40 flex justify-center items-end pb-6">
       <div className="backdrop-blur-xl bg-white/60 rounded-full shadow-xl flex items-center gap-2 px-4 py-2 max-w-2xl w-full mx-4 border border-white/40">
-        <button
+                <button
           className="p-2 rounded-full bg-yellow-100 text-yellow-600 hover:bg-yellow-200 transition-colors flex items-center justify-center"
-          title="Add emoji"
-          aria-label="Add emoji"
+                  title="Add emoji"
+                  aria-label="Add emoji"
           onClick={() => setShowEmojis(!showEmojis)}
-        >
+                >
           <Smile className="w-5 h-5" />
-        </button>
-        <button
-          onClick={() => fileInputRef.current?.click()}
+                </button>
+                <button
+                  onClick={() => fileInputRef.current?.click()}
           className="p-2 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors flex items-center justify-center"
-          title="Upload image"
-          aria-label="Upload image"
+                  title="Upload image"
+                  aria-label="Upload image"
           disabled={isOcrLoading}
-        >
+                >
           <Camera className="w-5 h-5" />
-        </button>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          onChange={handleImageUpload}
-          className="hidden"
-        />
-        <textarea
-          value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
-          onKeyPress={handleKeyPress}
+                </button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+                <textarea
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  onKeyPress={handleKeyPress}
           onKeyDown={handleKeyPress}
-          placeholder="Ask me anything about your studies... 🤔"
+                  placeholder="Ask me anything about your studies... 🤔"
           maxLength={500}
           className="flex-1 resize-none rounded-full border-none bg-transparent px-4 py-2 text-base focus:outline-none focus:ring-0 min-h-[40px] max-h-[80px] placeholder-gray-500"
-          rows={1}
+                  rows={1}
           disabled={isLoading || isOcrLoading}
         />
         <button
@@ -146,15 +146,15 @@ export const InputBar: React.FC<InputBarProps> = ({
         >
           <Mic className="w-5 h-5" />
         </button>
-        <button
-          onClick={handleSend}
+              <button
+                onClick={handleSend}
           className="p-2 rounded-full bg-purple-100 text-purple-600 hover:bg-purple-200 transition-colors flex items-center justify-center ml-2"
           title="Send"
           aria-label="Send"
           disabled={isLoading || inputText.trim().length === 0}
-        >
-          <Send className="w-5 h-5" />
-        </button>
+              >
+                <Send className="w-5 h-5" />
+              </button>
         <div className="text-xs text-gray-400 select-none pointer-events-none ml-2">
           {inputText.length}/500
         </div>
