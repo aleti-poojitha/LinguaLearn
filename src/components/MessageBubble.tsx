@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Message, AppSettings, VoicePlayback } from '../types';
 import { Volume2, User, Bot, Pause, Play, MoreVertical, VolumeX, Volume1 } from 'lucide-react';
 import { WaveformDisplay } from './WaveformDisplay';
-import { fetchTTS } from '../utils/speechService';
 
 // Utility: Convert plain text lists to HTML lists
 function convertPlainTextListsToHtml(text: string) {
@@ -165,13 +164,21 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
     setCurrentAudioIndex(0);
     try {
       const cleanText = stripEmojis(stripHtmlTags(message.text));
-      const audioBlob = await fetchTTS(cleanText, settings.language);
-      const audioUrl = URL.createObjectURL(audioBlob);
-      setAudioUrls([audioUrl]);
-      setTimeout(() => {
-        setCurrentAudioIndex(0);
-        audioRef.current?.play();
-      }, 100);
+      const response = await fetch('/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: cleanText, language: settings.language })
+      });
+      const data = await response.json();
+      if (response.ok && data.audioUrls && data.audioUrls.length > 0) {
+        setAudioUrls(data.audioUrls);
+        setTimeout(() => {
+          setCurrentAudioIndex(0);
+          audioRef.current?.play();
+        }, 100);
+      } else {
+        setAudioError(data.error || 'TTS not available for this language.');
+      }
     } catch (err) {
       setAudioError('TTS generation failed. Please try again.');
     } finally {
@@ -190,28 +197,12 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
           flex items-start space-x-3 ${message.isBot ? 'flex-row' : 'flex-row-reverse space-x-reverse'}
         `}>
           {/* Avatar */}
-          <div
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: '50%',
-              overflow: 'hidden',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
-            }}
-            className={settings.reducedMotion ? '' : 'transition-all duration-300 hover:scale-110'}
-          >
-            {message.isBot ? (
-              <img
-                src="/logo.png"
-                alt="LinguaLearn Logo"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', background: 'white' }}
-              />
-            ) : (
-              <User className="w-5 h-5 text-white" />
-            )}
+          <div className={`
+            w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-lg
+            bg-gradient-to-br ${getAvatarGradient(message.isBot)}
+            ${settings.reducedMotion ? '' : 'transition-all duration-300 hover:scale-110'}
+          `}>
+            {message.isBot ? <Bot className="w-5 h-5" /> : <User className="w-5 h-5" />}
           </div>
           {/* Message Content */}
           <div className={`
@@ -287,7 +278,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
                     <div className="w-full max-w-xs rounded-lg shadow-md border border-purple-200 bg-white/90 p-2 my-2 flex flex-col items-center audio-theme-bar" style={{ fontFamily: 'sans-serif' }}>
                       <audio
                         ref={audioRef}
-                        src={audioUrls[currentAudioIndex]}
+                        src={backendUrl + audioUrls[currentAudioIndex]}
                         onTimeUpdate={handleTimeUpdate}
                         onLoadedMetadata={handleLoadedMetadata}
                         onPlay={handleAudioPlay}
@@ -349,7 +340,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
                           <button
                             onClick={async () => {
                               try {
-                                const res = await fetch(audioUrls[currentAudioIndex]);
+                                const res = await fetch(backendUrl + audioUrls[currentAudioIndex]);
                                 const blob = await res.blob();
                                 const url = window.URL.createObjectURL(blob);
                                 const a = document.createElement('a');
