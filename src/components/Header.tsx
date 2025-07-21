@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, MessageCircle, Sparkles, Trophy, User, Home } from 'lucide-react';
+import { Settings, MessageCircle, Trophy, User, Home } from 'lucide-react';
 import { Subject, UserProgress, Language } from '../types';
 import { ProfileModal } from './ProfileModal';
 
@@ -71,9 +71,13 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="flex items-center space-x-4">
             <button
               onClick={onHomeClick}
-              className="w-12 h-12 bg-gradient-to-r from-purple-400 via-pink-400 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+              className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 p-0"
             >
-              <Sparkles className="w-6 h-6 text-white animate-pulse" />
+              <img
+                src="/logo.png"
+                alt="LinguaLearn Logo"
+                style={{ width: 40, height: 40, borderRadius: '12px' }}
+              />
             </button>
             
             <div>
@@ -106,7 +110,7 @@ export const Header: React.FC<HeaderProps> = ({
               
               <div className="flex items-center space-x-1">
                 <Trophy className="w-4 h-4 text-yellow-500" />
-                <span className="text-sm font-medium text-gray-700">{userProgress.streakDays}</span>
+                <span className="text-sm font-medium text-gray-700">{userProgress.streak}</span>
               </div>
             </div>
             {/* User Profile or Login */}
@@ -155,7 +159,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
       </div>
-      <ProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} user={user!} onSave={onProfileSave} onLogout={() => { localStorage.removeItem('token'); onLoginClick && onLoginClick(); }} />
+      <ProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} user={user!} onSave={onProfileSave ?? (() => {})} onLogout={() => { localStorage.removeItem('token'); onLoginClick && onLoginClick(); }} />
     </header>
   );
 };
