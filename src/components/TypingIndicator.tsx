@@ -24,6 +24,7 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({ settings }) =>
         <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-400 via-pink-400 to-purple-500 flex items-center justify-center text-white shadow-lg">
           <Bot className="w-5 h-5" />
         </div>
+        
         <div className={`
           bg-gradient-to-br ${getThemeGradient()} rounded-3xl px-6 py-4 shadow-lg backdrop-blur-sm border border-white/20
         `}>
@@ -44,6 +45,23 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({ settings }) =>
               `} style={{ animationDelay: '0.2s' }} />
             </div>
           </div>
+          
+          {/* Animated thinking waves */}
+          {!settings.reducedMotion && (
+            <div className="mt-2 flex space-x-1">
+              {[...Array(8)].map((_, i) => (
+                <div
+                  key={i}
+                  className="w-1 bg-purple-300 rounded-full animate-pulse"
+                  style={{
+                    height: `${Math.random() * 16 + 8}px`,
+                    animationDelay: `${i * 0.1}s`,
+                    animationDuration: '1.5s'
+                  }}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
