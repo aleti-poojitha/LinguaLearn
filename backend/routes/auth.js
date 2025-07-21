@@ -9,10 +9,21 @@ dotenv.config();
 
 const router = express.Router();
 
+// Add a list of allowed emails (for demo, hardcoded; in production, use env or DB)
+const allowedEmails = process.env.ALLOWED_EMAILS ? process.env.ALLOWED_EMAILS.split(',') : [
+  'student1@example.com',
+  'student2@example.com',
+  'student3@example.com'
+];
+
 // Register new user
 router.post('/register', async (req, res) => {
   const { name, email, phone, education, password, age, gender, location, interests } = req.body;
   if (!name || !email || !password) return res.status(400).json({ error: 'Name, email, and password are required' });
+  // Check if email is in allowed list
+  if (!allowedEmails.includes(email)) {
+    return res.status(400).json({ error: 'Registration is only allowed for approved email addresses.' });
+  }
   const existing = await User.findOne({ $or: [{ email }, { phone }] });
   if (existing) return res.status(400).json({ error: 'User already exists' });
   const hashed = await bcrypt.hash(password, 10);
