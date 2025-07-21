@@ -190,15 +190,24 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
           flex items-start space-x-3 ${message.isBot ? 'flex-row' : 'flex-row-reverse space-x-reverse'}
         `}>
           {/* Avatar */}
-          <div className={`
-            w-10 h-10 rounded-full flex items-center justify-center shadow-lg
-            ${settings.reducedMotion ? '' : 'transition-all duration-300 hover:scale-110'}
-          `}>
+          <div
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: '50%',
+              overflow: 'hidden',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+            }}
+            className={settings.reducedMotion ? '' : 'transition-all duration-300 hover:scale-110'}
+          >
             {message.isBot ? (
               <img
                 src="/logo.png"
                 alt="LinguaLearn Logo"
-                style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover', background: 'white' }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', background: 'white' }}
               />
             ) : (
               <User className="w-5 h-5 text-white" />
