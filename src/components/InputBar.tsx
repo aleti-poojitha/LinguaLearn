@@ -101,15 +101,31 @@ export const InputBar: React.FC<InputBarProps> = ({
 
   return (
     <div className="fixed bottom-0 left-0 w-full z-40 flex justify-center items-end pb-6">
-      <div className="backdrop-blur-xl bg-white/60 rounded-full shadow-xl flex items-center gap-2 px-4 py-2 max-w-2xl w-full mx-4 border border-white/40">
-                <button
+      <div className="backdrop-blur-xl bg-white/60 rounded-full shadow-xl flex items-center gap-2 px-4 py-2 max-w-2xl w-full mx-4 border border-white/40 relative">
+        {/* Emoji Button */}
+        <button
           className="p-2 rounded-full bg-yellow-100 text-yellow-600 hover:bg-yellow-200 transition-colors flex items-center justify-center"
-                  title="Add emoji"
-                  aria-label="Add emoji"
+          title="Add emoji"
+          aria-label="Add emoji"
           onClick={() => setShowEmojis(!showEmojis)}
-                >
+        >
           <Smile className="w-5 h-5" />
-                </button>
+        </button>
+        {/* Emoji Picker Dropdown */}
+        {showEmojis && (
+          <div className="absolute bottom-14 left-0 bg-white rounded-xl shadow-lg p-2 flex flex-wrap gap-1 z-50 border border-gray-200">
+            {emojis.map((emoji) => (
+              <button
+                key={emoji}
+                className="text-xl hover:bg-gray-100 rounded-full p-1 transition-colors"
+                onClick={() => handleEmojiSelect(emoji)}
+                tabIndex={-1}
+              >
+                {emoji}
+              </button>
+            ))}
+          </div>
+        )}
                 <button
                   onClick={() => fileInputRef.current?.click()}
           className="p-2 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors flex items-center justify-center"
