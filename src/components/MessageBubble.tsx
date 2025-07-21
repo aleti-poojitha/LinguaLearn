@@ -191,11 +191,18 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
         `}>
           {/* Avatar */}
           <div className={`
-            w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-lg
-            bg-gradient-to-br ${getAvatarGradient(message.isBot)}
+            w-10 h-10 rounded-full flex items-center justify-center shadow-lg
             ${settings.reducedMotion ? '' : 'transition-all duration-300 hover:scale-110'}
           `}>
-            {message.isBot ? <Bot className="w-5 h-5" /> : <User className="w-5 h-5" />}
+            {message.isBot ? (
+              <img
+                src="/logo.png"
+                alt="LinguaLearn Logo"
+                style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover', background: 'white' }}
+              />
+            ) : (
+              <User className="w-5 h-5 text-white" />
+            )}
           </div>
           {/* Message Content */}
           <div className={`
