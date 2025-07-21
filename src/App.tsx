@@ -153,12 +153,34 @@ function App() {
         localStorage.setItem('progress', JSON.stringify(progress));
       }
     }
+    // Redirect to home and reset summary card after login
+    resetSummaryCard();
   };
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('progress');
+    // Reset summary card and related state
+    resetSummaryCard();
+  };
+
+  // Add a helper to reset summary card and related state
+  const resetSummaryCard = () => {
+    setShowSummary(false);
+    setSelectedSubject('explore');
+    setSelectedTopic('');
+    setIsQuizActive(false);
+    setShowTopicPrompt(false);
+    setMessages([
+      {
+        id: '1',
+        text: translations[settings.language].welcome,
+        isBot: true,
+        timestamp: new Date(),
+        subject: 'explore'
+      }
+    ]);
   };
 
   // On mount, check localStorage for user/token
@@ -625,7 +647,7 @@ function App() {
       const res = await fetch(`${API_BASE_URL}/api/auth/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rating, feedback })
+        body: JSON.stringify({ rating, feedback, email: user?.email })
       });
       if (res.ok) {
     // Show thank you message
@@ -665,12 +687,14 @@ function App() {
         onSettingsClick={() => setIsSettingsOpen(true)}
         onFeedbackClick={() => setIsFeedbackOpen(true)}
         onDashboardClick={() => setIsDashboardOpen(true)}
-        onHomeClick={() => setSelectedSubject('explore')}
+        onHomeClick={resetSummaryCard}
         user={user}
         onLoginClick={handleLogout}
         onProfileSave={(updatedUser) => {
           setUser(updatedUser);
           localStorage.setItem('user', JSON.stringify(updatedUser));
+          // If profile switch means a different user, reset summary card
+          resetSummaryCard();
         }}
       />
       <div className="pt-20 pb-4">

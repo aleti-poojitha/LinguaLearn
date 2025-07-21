@@ -57,6 +57,8 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const API_BASE_URL = import.meta.env.VITE_API_URL;
+
   const handleSave = async () => {
     setLoading(true);
     setError(null);
@@ -76,7 +78,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
         location: form.location,
         interests: Array.isArray(form.interests) ? form.interests : (form.interests ? String(form.interests).split(',').map(s => s.trim()).filter(Boolean) : [])
       };
-      const res = await fetch('http://localhost:5000/api/auth/profile', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/profile`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
