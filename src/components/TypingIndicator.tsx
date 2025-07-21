@@ -21,8 +21,23 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({ settings }) =>
   return (
     <div className="flex justify-start mb-6">
       <div className="flex items-start space-x-3">
-        <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-400 via-pink-400 to-purple-500 flex items-center justify-center text-white shadow-lg">
-          <Bot className="w-5 h-5" />
+        <div
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: '50%',
+            overflow: 'hidden',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+          }}
+        >
+          <img
+            src="/logo.png"
+            alt="LinguaLearn Logo"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', background: 'white' }}
+          />
         </div>
         
         <div className={`
@@ -45,23 +60,6 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({ settings }) =>
               `} style={{ animationDelay: '0.2s' }} />
             </div>
           </div>
-          
-          {/* Animated thinking waves */}
-          {!settings.reducedMotion && (
-            <div className="mt-2 flex space-x-1">
-              {[...Array(8)].map((_, i) => (
-                <div
-                  key={i}
-                  className="w-1 bg-purple-300 rounded-full animate-pulse"
-                  style={{
-                    height: `${Math.random() * 16 + 8}px`,
-                    animationDelay: `${i * 0.1}s`,
-                    animationDuration: '1.5s'
-                  }}
-                />
-              ))}
-            </div>
-          )}
         </div>
       </div>
     </div>
